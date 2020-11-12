@@ -1,0 +1,18 @@
+# ignore build and configuration files
+jobblett/target/
+target/
+*.class
+*.jar
+*.war
+*.ear
+*.logs
+*.iml
+.idea/
+.settings/
+.eclipse
+.classpath
+.project
+.vscode
+
+# ignore macOS temporary files
+.DS_Store
