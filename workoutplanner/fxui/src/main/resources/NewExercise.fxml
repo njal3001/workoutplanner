@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<?import javafx.scene.text.Text?>
+<?import javafx.scene.text.Font?>
+<VBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="ui.NewExerciseController"
+      prefHeight="720.0" prefWidth="480.0">
+    <Text text="Name:">
+        <font>
+            <Font name="System bold"></Font>
+        </font>
+    </Text>
+    <TextField fx:id="exerciseNameField"></TextField>
+    <Text text="Description:">
+        <font>
+            <Font name="System bold"></Font>
+        </font>
+    </Text>
+    <TextArea fx:id="exerciseDescriptionArea" prefHeight="300"></TextArea>
+    <Text text="Choose body part:" translateX="10">
+        <font>
+            <Font name="System bold"></Font>
+        </font>
+    </Text>
+    <FlowPane fx:id="bodyPartPane" hgap="14" vgap="25" translateX="5" translateY="10"></FlowPane>
+    <Text text="Choose equipment:" translateX="10" translateY="50">
+        <font>
+            <Font name="System bold"></Font>
+        </font>
+    </Text>
+    <FlowPane fx:id="equipmentPane" hgap="14" vgap="25" translateX="5" translateY="55"></FlowPane>
+    <HBox translateY="170">
+        <Button onAction="#handleCancel" text="Cancel" translateX="20"></Button>
+        <Button onAction="#handleAddExercise" text="Add exercise" translateX="320"></Button>
+    </HBox>
+</VBox>

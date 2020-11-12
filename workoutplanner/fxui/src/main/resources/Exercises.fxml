@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<?import javafx.scene.text.Text?>
+<?import javafx.scene.text.Font?>
+<VBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="ui.ExercisesController"
+      prefHeight="720.0" prefWidth="480.0" spacing="10">
+    <TextField fx:id="searchBar" promptText="Search"></TextField>
+    <Text text="Body part" translateX="10">
+        <font>
+            <Font name="System bold"></Font>
+        </font>
+    </Text>
+    <FlowPane fx:id="bodyPartPane" hgap="14" vgap="10" translateX="5"></FlowPane>
+    <Text text="Equipment" translateX="10">
+        <font>
+            <Font name="System bold"></Font>
+        </font>
+    </Text>
+    <FlowPane fx:id="equipmentPane" hgap="14" vgap="10" translateX="5"></FlowPane>
+    <ListView fx:id="exercisesView" prefHeight="480"></ListView>
+    <HBox>
+        <Button fx:id="deleteExerciseButton" onAction="#handleDeleteExerciseAction" text="Delete exercise" translateX="20"></Button>
+        <Button onAction="#handleAddNewExerciseAction" text="Add new exercise" translateX="260"></Button>
+    </HBox>
+</VBox>
