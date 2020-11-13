@@ -27,17 +27,19 @@ public class ExerciseListResource {
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
     @Path("/add")
-    public void addExercise(Exercise exercise){
+    public boolean addExercise(Exercise exercise){
         LOG.debug("Exercise added: " + exercise);
-        this.exerciseList.addExercise(exercise);
+        return this.exerciseList.addExercise(exercise);
     }
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
     @Path("/remove")
-    public void removeExercise(Exercise exercise){
+    public boolean removeExercise(Exercise exercise){
         LOG.debug("Exercise removed: " + exercise);
-        this.exerciseList.removeExercise(exercise);
+        return this.exerciseList.removeExercise(exercise);
     }
 }

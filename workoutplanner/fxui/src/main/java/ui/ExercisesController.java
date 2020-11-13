@@ -42,8 +42,7 @@ public class ExercisesController implements SceneController{
     @FXML
     public void initialize() {
         filteredExerciseList.addExerciseListListener(list -> {updateView();});
-        createChoiceBoxes_Equipment();
-        createChoiceBoxes_BodyPart();
+
         searchBar.textProperty().addListener((observable, oldValue, newValue) -> {
             if(newValue.length() == 0)
                 filteredExerciseList.setNameFilter(null);
@@ -62,7 +61,8 @@ public class ExercisesController implements SceneController{
     private Collection<CheckBox> checkboxes = new ArrayList<CheckBox>();
 
     private void createChoiceBoxes_Equipment() {
-        for (Equipment equipment : Equipment.getAllEquipment()) {
+        System.out.println(scenesController.getAccess().getAllEquipment());
+        for (Equipment equipment : scenesController.getAccess().getAllEquipment()) {
             CheckBox checkBox = new CheckBox();
             checkBox.setText(equipment.toString());
             checkBox.selectedProperty().addListener((observable, oldValue, newValue) -> {
@@ -78,7 +78,8 @@ public class ExercisesController implements SceneController{
     }
 
     private void createChoiceBoxes_BodyPart() {
-        for (BodyPart bodyPart : BodyPart.getAllBodyParts()) {
+        System.out.println(scenesController.getAccess().getAllBodyParts());
+        for (BodyPart bodyPart : scenesController.getAccess().getAllBodyParts()) {
             CheckBox checkBox = new CheckBox();
             checkBox.setText(bodyPart.toString());
             checkBox.selectedProperty().addListener((observable, oldValue, newValue) -> {
@@ -92,10 +93,16 @@ public class ExercisesController implements SceneController{
         }
     }
 
+    private boolean choiceBoxesCreated = false;
+
     @Override
     public void onSceneDisplayed() {
+        if(!choiceBoxesCreated){
+            createChoiceBoxes_Equipment();
+            createChoiceBoxes_BodyPart();
+            choiceBoxesCreated = true;
+        }
         filteredExerciseList.clear();
-        //System.out.println(scenesController.getAccess());
         filteredExerciseList.addExercise(scenesController.getAccess().getExercises());
         searchBar.setText("");
         checkboxes.stream().forEach(c -> c.setSelected(false));

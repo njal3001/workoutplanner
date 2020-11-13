@@ -28,18 +28,13 @@ public class NewExerciseController implements SceneController{
         this.scenesController = scenesController;
     }
 
-    @FXML
-    public void initialize(){
-        createChoiceBoxes_Equipment();
-        createRadioButtons_BodyParts();
-    }
 
     private Collection<CheckBox> checkBoxes = new ArrayList<>();
 
     private Collection<Equipment> selectedEquipment = new ArrayList<>();
 
     private void createChoiceBoxes_Equipment() {
-        for (Equipment equipment : Equipment.getAllEquipment()) {
+        for (Equipment equipment : scenesController.getAccess().getAllEquipment()) {
             CheckBox checkBox = new CheckBox();
             checkBox.setText(equipment.toString());
             checkBox.selectedProperty().addListener((observable, oldValue, newValue) -> {
@@ -57,7 +52,7 @@ public class NewExerciseController implements SceneController{
     
     private void createRadioButtons_BodyParts(){
         ToggleGroup toggleGroup = new ToggleGroup();
-        for(BodyPart bodyPart : BodyPart.getAllBodyParts()){
+        for(BodyPart bodyPart : scenesController.getAccess().getAllBodyParts()){
             RadioButton radioButton = new RadioButton();
             radioButton.setText(bodyPart.toString());
             radioButton.setToggleGroup(toggleGroup);
@@ -68,8 +63,16 @@ public class NewExerciseController implements SceneController{
         }
     }
 
+
+    private boolean buttonsCreated = false;
+
     @Override
     public void onSceneDisplayed() {
+        if(!buttonsCreated){
+            createChoiceBoxes_Equipment();
+            createRadioButtons_BodyParts();
+            buttonsCreated = true;
+        }
         exerciseNameField.setText("");
         exerciseDescriptionArea.setText("");
         ((RadioButton)bodyPartPane.getChildren().get(0)).selectedProperty().setValue(true);

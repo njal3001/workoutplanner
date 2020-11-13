@@ -23,7 +23,6 @@ public class RemoteWorkoutPlannerAccess implements WorkoutPlannerAccess {
     private Collection<Equipment> allEquipment;
     private Collection<BodyPart> allBodyParts;
 
-
     public RemoteWorkoutPlannerAccess(URI endpointBaseUri) {
         this.endpointBaseUri = endpointBaseUri;
         objectMapper = new ObjectMapper().registerModule(new WorkoutPlannerModule());
@@ -33,12 +32,10 @@ public class RemoteWorkoutPlannerAccess implements WorkoutPlannerAccess {
     public Collection<Exercise> getExercises() {
         if (exerciseList == null) {
             try {
-                HttpRequest request = HttpRequest.newBuilder(endpointBaseUri).
-                        header("Accept", "application/json").
-                        GET().
-                        build();
-                final HttpResponse<String> response =
-                        HttpClient.newBuilder().build().send(request, HttpResponse.BodyHandlers.ofString());
+                HttpRequest request = HttpRequest.newBuilder(endpointBaseUri).header("Accept", "application/json").GET()
+                        .build();
+                final HttpResponse<String> response = HttpClient.newBuilder().build().send(request,
+                        HttpResponse.BodyHandlers.ofString());
                 final String responseString = response.body();
                 exerciseList = objectMapper.readValue(responseString, ExerciseList.class);
                 System.out.println("ExerciseList: " + exerciseList);
@@ -54,12 +51,16 @@ public class RemoteWorkoutPlannerAccess implements WorkoutPlannerAccess {
         try {
             String json = objectMapper.writeValueAsString(exercise);
             HttpRequest request = HttpRequest.newBuilder(endpointBaseUri.resolve("exerciselist/remove"))
-                    .header("Content-Type", "application/json")
-                    .POST(HttpRequest.BodyPublishers.ofString(json))
-                    .build();
-            System.out.println("Exercise removed: " + exercise.getName());
-            this.exerciseList.removeExercise(exercise);
-        } catch (IOException e) {
+                    .header("Content-Type", "application/json").POST(HttpRequest.BodyPublishers.ofString(json)).build();
+            final HttpResponse<String> response = HttpClient.newBuilder().build().send(request,
+                    HttpResponse.BodyHandlers.ofString());
+            String responseString = response.body();
+            Boolean removed = objectMapper.readValue(responseString, Boolean.class);
+            if (removed != null) {
+                System.out.println("Exercise removed: " + exercise.getName());
+                this.exerciseList.removeExercise(exercise);
+            }
+        } catch (IOException | InterruptedException e) {
             throw new RuntimeException(e);
         }
     }
@@ -69,29 +70,31 @@ public class RemoteWorkoutPlannerAccess implements WorkoutPlannerAccess {
         try {
             String json = objectMapper.writeValueAsString(exercise);
             HttpRequest request = HttpRequest.newBuilder(endpointBaseUri.resolve("exerciselist/add"))
-                    .header("Content-Type", "application/json")
-                    .POST(HttpRequest.BodyPublishers.ofString(json))
-                    .build();
-            System.out.println("Exercise added: " + exercise.getName());
-            this.exerciseList.addExercise(exercise);
-        } catch (IOException e) {
+                    .header("Content-Type", "application/json").POST(HttpRequest.BodyPublishers.ofString(json)).build();
+            final HttpResponse<String> response = HttpClient.newBuilder().build().send(request,
+                    HttpResponse.BodyHandlers.ofString());
+            String responseString = response.body();
+            Boolean added = objectMapper.readValue(responseString, Boolean.class);
+            if (added != null) {
+                System.out.println("Exercise added: " + exercise.getName());
+                this.exerciseList.addExercise(exercise);
+            }
+        } catch (IOException | InterruptedException e) {
             throw new RuntimeException(e);
         }
     }
-
 
     @Override
     public Collection<Equipment> getAllEquipment() {
         if (allEquipment == null) {
             try {
                 HttpRequest request = HttpRequest.newBuilder(endpointBaseUri.resolve("equipment"))
-                        .header("Accept", "application/json")
-                        .GET()
-                        .build();
-                final HttpResponse<String> response =
-                        HttpClient.newBuilder().build().send(request, HttpResponse.BodyHandlers.ofString());
+                        .header("Accept", "application/json").GET().build();
+                final HttpResponse<String> response = HttpClient.newBuilder().build().send(request,
+                        HttpResponse.BodyHandlers.ofString());
                 final String responseString = response.body();
-                this.allEquipment = objectMapper.readValue(responseString, ArrayList.class);
+                System.out.println(Arrays.asList(mapper.readValue(responseString, Equipment[].class)));
+                //this.allEquipment = objectMapper.readValue(responseString, Equipment[].class);
                 System.out.println("All equipment: " + this.allEquipment);
             } catch (IOException | InterruptedException e) {
                 throw new RuntimeException(e);
@@ -105,13 +108,12 @@ public class RemoteWorkoutPlannerAccess implements WorkoutPlannerAccess {
         if (allBodyParts == null) {
             try {
                 HttpRequest request = HttpRequest.newBuilder(endpointBaseUri.resolve("bodypart"))
-                        .header("Accept", "application/json")
-                        .GET()
-                        .build();
-                final HttpResponse<String> response =
-                        HttpClient.newBuilder().build().send(request, HttpResponse.BodyHandlers.ofString());
+                        .header("Accept", "application/json").GET().build();
+                final HttpResponse<String> response = HttpClient.newBuilder().build().send(request,
+                        HttpResponse.BodyHandlers.ofString());
                 final String responseString = response.body();
-                this.allBodyParts = objectMapper.readValue(responseString, ArrayList.class);
+                System.out.println(Arrays.asList(mapper.readValue(responseString, BodyPart[].class)));
+                //this.allBodyParts = objectMapper.readValue(responseString, BodyPart[].class);
                 System.out.println("All body parts: " + this.allBodyParts);
             } catch (IOException | InterruptedException e) {
                 throw new RuntimeException(e);

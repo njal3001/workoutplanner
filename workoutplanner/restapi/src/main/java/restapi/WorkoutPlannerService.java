@@ -25,7 +25,7 @@ public class WorkoutPlannerService {
     private ExerciseList exerciseList;
 
 
-    @Path("/exerciseList")
+    @Path("/exerciselist")
     public ExerciseListResource getExerciseList(){
         LOG.debug("Sub - resource for ExerciseList: " + exerciseList);
         return new ExerciseListResource(exerciseList);

@@ -9,19 +9,25 @@ public class ExerciseList implements Iterable<Exercise>{
 	
 	private Collection<Exercise> exercises = new HashSet<>();
 
-	public void addExercise(Collection<Exercise> exercises){
-		if(this.exercises.addAll(exercises))
-			fireExerciseListChanged();
+	public boolean addExercise(Collection<Exercise> exercises){
+        boolean changed = this.exercises.addAll(exercises);
+		if(changed)
+            fireExerciseListChanged();
+        return changed;
 	}
 
-	public void addExercise(Exercise exercise) {
-		if(exercises.add(exercise))
-			fireExerciseListChanged();
+	public boolean addExercise(Exercise exercise) {
+        boolean changed = exercises.add(exercise);
+		if(changed)
+            fireExerciseListChanged();
+        return changed;
 	}
 
-	public void removeExercise(Exercise exercise) {
-		if(exercises.remove(exercise))
-			fireExerciseListChanged();
+	public boolean removeExercise(Exercise exercise) {
+		boolean changed = exercises.remove(exercise);
+        if(changed)
+            fireExerciseListChanged();
+        return changed;
 	}
 
 	public void clear(){
